@@ -4,6 +4,14 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.example.model.Model;
+import org.example.objreader.ObjReader;
+import org.example.objwriter.ObjWriter;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class App extends Application {
 
@@ -12,7 +20,7 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Blender Java");
 
         // Создание главного контейнера
@@ -22,6 +30,13 @@ public class App extends Application {
 
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
+
+
+//      Получение из файла и запись модели в файл
+        String fileContent = Files.readString(Path.of("3DModels/Faceform/WrapUpperTeeth.obj"));
+        Model model = ObjReader.read(fileContent);
+        String file = "New file.obj";
+        ObjWriter.writeModelToObjFile(file, model);
 
         primaryStage.show();
     }
